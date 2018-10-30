@@ -17,6 +17,9 @@ void ObjectManager::initFactionList(const std::string& factionConfigPath)
 
 }
 
+/*
+	Update
+*/
 void ObjectManager::update(const int& deltaTime)
 {
 	// Creates new entities needing to be added.
@@ -35,13 +38,13 @@ void ObjectManager::update(const int& deltaTime)
 
 	// Updates the currently list of entities.
 	for (auto pawn : m_gameObjects) {
-		std::cout << pawn.use_count() << std::endl;
 		pawn->update(deltaTime);
 	}
-
-	std::cout << m_gameObjects.size() << std::endl;
 }
 
+/*
+	Render
+*/
 void ObjectManager::render(sf::RenderWindow& window)
 {
 	for (auto pawn : m_gameObjects) {

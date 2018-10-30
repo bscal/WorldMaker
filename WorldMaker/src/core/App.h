@@ -4,19 +4,19 @@
 
 #include "core/Gamemode.h"
 
-using namespace sf;
-
 class App {
 public:
 	// Time for updates in microseconds
-	const Int64 m_delta = 1000000 / 20 - 1000;
+	const sf::Int64 m_DELTA = 1000000 / 20 - 2000;
 	int m_updatesPerSec = 0, m_framesPerSec = 0;
 
 private:
-	// All the modules of features step from here
-	RenderWindow* m_window;
+	sf::RenderWindow* m_window;
 	Gamemode* m_gamemode;
 
+	struct nk_context* m_nuklearContex;
+
+	int m_updatesCount = 0, m_framesCount = 0;
 public:
 	App();
 	~App();
@@ -24,12 +24,15 @@ public:
 	// Starts the App. Main game loop
 	void loop();
 	void update(const int& deltaTime);
-	void render();
+	void render(sf::RenderWindow& windowReference);
 
-	inline RenderWindow* getWindow() const { return m_window; }
-	inline const Gamemode& getGamemode() const { return *m_gamemode; }
+	sf::RenderWindow& getWindow() const { return *m_window; }
+	Gamemode* getGamemode() const { return m_gamemode; }
+	nk_context* getNuklearContext() const { return m_nuklearContex; }
 
 private:
-	const bool initWindow();
-	const bool initGamemode();
+	bool initWindow();
+	bool initGamemode();
+
+	void showPreformance();
 };

@@ -15,8 +15,7 @@ Gamemode::Gamemode()
 	auto f0 = std::make_shared<Faction>("Romans");
 	f0->initilize();
 
-
-	std::cout << *f0 << std::endl;
+	//std::cout << *f0 << std::endl;
 }
 
 Gamemode::~Gamemode()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include <memory>
 #include <SFML/Graphics.hpp>
 
@@ -28,8 +29,9 @@ public:
 	// Any object derived from Pawn can be added through this function.
 	static void createObject(std::shared_ptr<Pawn> object);
 
-	// Removes object on next GameManager update.
+	// Removes object by id on next GameManager update.
 	static void removeObject(const unsigned int& id);
+	// Removes object by name on next GameManager update.
 	static void removeObject(const std::string& name);
 
 	static std::shared_ptr<Pawn> getObject(const unsigned int& id);
