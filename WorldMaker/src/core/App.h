@@ -14,8 +14,6 @@ private:
 	sf::RenderWindow* m_window;
 	Gamemode* m_gamemode;
 
-	struct nk_context* m_nuklearContex;
-
 	int m_updatesCount = 0, m_framesCount = 0;
 public:
 	App();
@@ -28,7 +26,6 @@ public:
 
 	sf::RenderWindow& getWindow() const { return *m_window; }
 	Gamemode* getGamemode() const { return m_gamemode; }
-	nk_context* getNuklearContext() const { return m_nuklearContex; }
 
 private:
 	bool initWindow();

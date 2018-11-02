@@ -27,7 +27,7 @@ void ObjectManager::update(const int& deltaTime)
 		for (auto pawn : m_createList) {
 			m_gameObjects.push_back(pawn);
 		}
-		m_createList.clear();
+		m_createList.shrink_to_fit();
 	}
 
 	// Deletes any entities that are not living.

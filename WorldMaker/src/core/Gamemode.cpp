@@ -2,6 +2,17 @@
 
 #include <iostream>
 
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_VARARGS
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#include "nuklear/nuklear.h"
+#include "nuklear/nuklear_sfml_gl2.h"
+
+#include "ui/UIManager.h"
+
 Gamemode::Gamemode()
 	: map("assets/map.png"), objectManager()
 {
@@ -34,4 +45,11 @@ void Gamemode::render(sf::RenderWindow& window)
 {
 	map.render(window);
 	objectManager.render(window);
+
+	if (nk_begin(UIManager::m_nuklearContex, "Debug1", nk_rect(50, 50, 230, 250),
+		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
+		nk_window* win = nk_window_find(UIManager::m_nuklearContex, "Debug");
+		nk_label(UIManager::m_nuklearContex, "Test", NK_TEXT_LEFT);
+	}
+	nk_end(UIManager::m_nuklearContex);
 }

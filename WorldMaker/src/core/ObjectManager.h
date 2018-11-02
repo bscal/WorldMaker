@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <list>
 #include <memory>
 #include <SFML/Graphics.hpp>
 

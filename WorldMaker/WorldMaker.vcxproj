@@ -146,6 +146,7 @@
     <ClCompile Include="src\entity\faction\Faction.cpp" />
     <ClCompile Include="src\entity\Pawn.cpp" />
     <ClCompile Include="src\map\Tilemap.cpp" />
+    <ClCompile Include="src\ui\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObjectManager.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\entity\faction\Faction.h" />
     <ClInclude Include="src\entity\Pawn.h" />
     <ClInclude Include="src\map\Tilemap.h" />
+    <ClInclude Include="src\ui\UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

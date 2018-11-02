@@ -9,18 +9,20 @@
 #define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
-#define NK_IMPLEMENTATION
-#define NK_SFML_GL2_IMPLEMENTATION
 #include "nuklear/nuklear.h"
 #include "nuklear/nuklear_sfml_gl2.h"
 
-#define DEBUG_CONSOLE 1
+#include "ui/UIManager.h"
 
+#define DEBUG_CONSOLE 1
 
 App::App()
 {
 	// Creates RenderWindow
 	initWindow();
+
+	// Init UI
+	UIManager::init(m_window);
 
 	// Starts Gamemode
 	initGamemode();
@@ -28,7 +30,7 @@ App::App()
 
 App::~App()
 {
-	nk_sfml_shutdown();
+	UIManager::cleanup();
 	delete m_gamemode;
 	delete m_window;
 }
@@ -40,25 +42,18 @@ void App::loop()
 
 	/* Stores a reference to m_window so we do not need to dereference constantly */
 	sf::RenderWindow& windowReference = *m_window;
-
-	/* Setup and Initialization of Nuklear SFML library */
-	m_nuklearContex = nk_sfml_init(m_window);
-	/* Load Fonts: if none of these are loaded a default font will be used  */
-	/* Load Cursor: if you uncomment cursor loading please hide the cursor */
-	struct nk_font_atlas *atlas;
-	nk_sfml_font_stash_begin(&atlas);
-	nk_sfml_font_stash_end();
+	UIManager m;
 
 	while (windowReference.isOpen()) {
 		sf::Event event;
-		nk_input_begin(m_nuklearContex);
+		nk_input_begin(UIManager::m_nuklearContex);
 		while (windowReference.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				windowReference.close();
 				//TODO event handler
 			nk_sfml_handle_event(&event);
 		}
-		nk_input_end(m_nuklearContex);
+		nk_input_end(UIManager::m_nuklearContex);
 
 		if (deltaClock.getElapsedTime().asMicroseconds() > m_DELTA)
 			update(deltaClock.restart().asMilliseconds());
@@ -123,17 +118,17 @@ bool App::initGamemode()
 void App::showPreformance()
 {
 #if DEBUG_CONSOLE
-	if (nk_begin(m_nuklearContex, "Debug", nk_rect(50, 50, 230, 250),
+	if (nk_begin(UIManager::m_nuklearContex, "Debug", nk_rect(50, 50, 230, 250),
 		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
-		nk_layout_row_static(m_nuklearContex, 30, 180, 1);
+		nk_layout_row_static(UIManager::m_nuklearContex, 30, 180, 1);
 		std::string updates("Updates/Sec: " + std::to_string(m_updatesPerSec));
 		std::string renders("Frames/Sec: " + std::to_string(m_framesPerSec));
 		std::string msPerFrame("MS/Frame: " + std::to_string((float) 1000.0f / m_framesPerSec));
 
-		nk_label(m_nuklearContex, updates.c_str(), NK_TEXT_LEFT);
-		nk_label(m_nuklearContex, renders.c_str(), NK_TEXT_LEFT);
-		nk_label(m_nuklearContex, msPerFrame.c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, updates.c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, renders.c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, msPerFrame.c_str(), NK_TEXT_LEFT);
 	}
-	nk_end(m_nuklearContex);
+	nk_end(UIManager::m_nuklearContex);
 #endif // DEBUG
 }
