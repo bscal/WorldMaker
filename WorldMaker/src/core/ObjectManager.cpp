@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-unsigned int ObjectManager::m_objectIDCount;
+unsigned int ObjectManager::m_objectIDCount = 0;
 
-unsigned int ObjectManager::m_factionIDCount;
+unsigned int ObjectManager::m_factionIDCount = 0;
 
 std::vector<std::shared_ptr<Pawn>> ObjectManager::m_gameObjects;
 
@@ -26,8 +26,11 @@ void ObjectManager::update(const int& deltaTime)
 	if (m_createList.size() > 0) {
 		for (auto pawn : m_createList) {
 			m_gameObjects.push_back(pawn);
+			std::cout << "Added Pawn " << pawn->getID() << std::endl;
 		}
-		m_createList.shrink_to_fit();
+		m_createList.clear();
+		if (m_createList.capacity() > 16)
+			m_createList.shrink_to_fit();
 	}
 
 	// Deletes any entities that are not living.
@@ -68,19 +71,20 @@ void ObjectManager::createObject(std::shared_ptr<Pawn> object)
 void ObjectManager::removeObject(const unsigned int& id)
 {
 	for (auto pawn : m_gameObjects) {
-		if (pawn->getID() == id)
+		if (pawn->getID() == id) {
 			pawn->setLiving(false);
+			std::cout << "Removed Pawn " << id << std::endl;
+		}
 	}
 }
 
 void ObjectManager::removeObject(const std::string& name)
 {
 	for (auto pawn : m_gameObjects) {
-		if (pawn->getName() == name)
+		if (pawn->getName() == name) 
 			pawn->setLiving(false);
 	}
 }
-
 
 std::shared_ptr<Pawn> ObjectManager::getObject(const unsigned int& id)
 {
@@ -125,11 +129,6 @@ std::shared_ptr<Faction> ObjectManager::getFaction(const sf::Color& color)
 			return faction;
 	}
 	return nullptr;
-}
-
-unsigned int ObjectManager::getIDCount()
-{
-	return m_objectIDCount;
 }
 
 unsigned int ObjectManager::getNextID()

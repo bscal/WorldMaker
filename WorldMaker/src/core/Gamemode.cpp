@@ -38,18 +38,10 @@ void Gamemode::update(const int& deltaTime)
 {
 	map.update(deltaTime);
 	objectManager.update(deltaTime);
-	//std::cout << ObjectManager::getGameObjects().size() << std::endl;
 }
 
 void Gamemode::render(sf::RenderWindow& window)
 {
 	map.render(window);
 	objectManager.render(window);
-
-	if (nk_begin(UIManager::m_nuklearContex, "Debug1", nk_rect(50, 50, 230, 250),
-		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
-		nk_window* win = nk_window_find(UIManager::m_nuklearContex, "Debug");
-		nk_label(UIManager::m_nuklearContex, "Test", NK_TEXT_LEFT);
-	}
-	nk_end(UIManager::m_nuklearContex);
 }

@@ -28,15 +28,12 @@ public:
 	Pawn(const std::string& name);
 	Pawn(const std::string& name, const sf::Vector2f& pos);
 	
-	/// Call this when you want the Object to be placed into
-	/// the game and updated.
+	// Call this when you want the Object to be placed into
+	// the game and updated.
 	virtual void initilize();
 
 	virtual void update(const int& deltaTime);
 	virtual void render(sf::RenderWindow& window);
-
-	// This will remove the object safely.
-	virtual void remove();
 
 	friend std::ostream& operator<<(std::ostream& os, const Pawn& pawn);
 

@@ -13,6 +13,7 @@
 #include "nuklear/nuklear_sfml_gl2.h"
 
 #include "ui/UIManager.h"
+#include "ObjectManager.h"
 
 #define DEBUG_CONSOLE 1
 
@@ -42,7 +43,6 @@ void App::loop()
 
 	/* Stores a reference to m_window so we do not need to dereference constantly */
 	sf::RenderWindow& windowReference = *m_window;
-	UIManager m;
 
 	while (windowReference.isOpen()) {
 		sf::Event event;
@@ -118,16 +118,34 @@ bool App::initGamemode()
 void App::showPreformance()
 {
 #if DEBUG_CONSOLE
-	if (nk_begin(UIManager::m_nuklearContex, "Debug", nk_rect(50, 50, 230, 250),
+	if (nk_begin(UIManager::m_nuklearContex, "Debug", nk_rect(50, 50, 230, 315),
 		NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
-		nk_layout_row_static(UIManager::m_nuklearContex, 30, 180, 1);
+		nk_layout_row_static(UIManager::m_nuklearContex, 20, 180, 1);
+
+		// Performance
 		std::string updates("Updates/Sec: " + std::to_string(m_updatesPerSec));
 		std::string renders("Frames/Sec: " + std::to_string(m_framesPerSec));
 		std::string msPerFrame("MS/Frame: " + std::to_string((float) 1000.0f / m_framesPerSec));
-
 		nk_label(UIManager::m_nuklearContex, updates.c_str(), NK_TEXT_LEFT);
 		nk_label(UIManager::m_nuklearContex, renders.c_str(), NK_TEXT_LEFT);
 		nk_label(UIManager::m_nuklearContex, msPerFrame.c_str(), NK_TEXT_LEFT);
+
+		// Object Debug
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("ObjCount ", ObjectManager::getObjectCount()).c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("ObjCapacity ", ObjectManager::getGameObjects().capacity()).c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("ObjNum ", ObjectManager::getCurrentObjectID()).c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("FacCount ", ObjectManager::getFactionCount()).c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("FacCapacity ", ObjectManager::getFactionList().capacity()).c_str(), NK_TEXT_LEFT);
+		nk_label(UIManager::m_nuklearContex, UIManager::formatValues("FacNum ", ObjectManager::getCurrentFactionID()).c_str(), NK_TEXT_LEFT);
+
+		if (nk_button_label(UIManager::m_nuklearContex, "Create Faction")) {
+			auto f0 = std::make_shared<Faction>("Romans");
+			f0->initilize();
+		}
+
+		if (nk_button_label(UIManager::m_nuklearContex, "Delete Object")) {
+			ObjectManager::removeObject(ObjectManager::getGameObjects().front()->getID());
+		}
 	}
 	nk_end(UIManager::m_nuklearContex);
 #endif // DEBUG

@@ -1,5 +1,6 @@
 #include "Pawn.h"
 
+#include <iostream>
 #include <core/ObjectManager.h>
 
 Pawn::Pawn()
@@ -12,7 +13,9 @@ Pawn::Pawn(const std::string& name)
 
 Pawn::Pawn(const std::string& name, const sf::Vector2f& pos)
 	: m_name(name), m_living(true), m_enabled(true), m_position(pos)
-{}
+{
+	std::cout << "Constructed Pawn" << std::endl;
+}
 
 void Pawn::initilize()
 {
@@ -28,11 +31,6 @@ void Pawn::update(const int& deltaTime)
 void Pawn::render(sf::RenderWindow& window)
 {
 
-}
-
-void Pawn::remove()
-{
-	ObjectManager::removeObject(m_id);
 }
 
 std::ostream& operator<<(std::ostream& os, const Pawn& pawn)

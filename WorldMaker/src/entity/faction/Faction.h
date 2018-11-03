@@ -16,8 +16,10 @@ public:
 public:
 	Faction(const std::string& name);
 
+	virtual void initilize() override;
+
 	virtual void update(const int& deltaTime) override;
-	
+
 	sf::Color getFactionColor() const { return m_factionColor; }
 	void setFactionColor(const sf::Color& color) { m_factionColor = color; }
 
